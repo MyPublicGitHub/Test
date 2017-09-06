@@ -24,7 +24,6 @@ export default class LoginView extends React.Component {
         // 在第二个页面,在goBack之前,将上个页面的方法取到,并回传参数,这样回传的参数会重走render方法
         // state.params.callback('从LoginView界面回传的数据');
         goBack(null);
-        AsUtils.clear();
     }
 
     _isNull() {
@@ -69,6 +68,7 @@ export default class LoginView extends React.Component {
                         ToastAndroid.show('登录成功!', ToastAndroid.SHORT);
                         AsUtils.setItem(AsUtils.AS_KEY_USERACCOUNT, this.state.username);
                         AsUtils.setItem(AsUtils.AS_KEY_PASSWORD, this.state.password);
+                        this.props.navigation.navigate('Main')
                     } else {
                         //alert(responseJson.statusDesc + 'response')
                         ToastAndroid.show('登录shibai !' + responseJson.statusDesc, ToastAndroid.SHORT);
@@ -103,7 +103,7 @@ export default class LoginView extends React.Component {
         });
 
         if (this.state.username !== '' && this.state.password !== '') {
-            this._onPressLogin();
+            this._onPressLogin;
         }
     }
 
