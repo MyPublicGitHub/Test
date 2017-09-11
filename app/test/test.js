@@ -1,7 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Image, Text, ImageBackground, TouchableOpacity, ToastAndroid, SectionList, FlatList ,RefreshControl} from 'react-native'
+import { StyleSheet, View, Image, Text, ImageBackground, TouchableOpacity, ToastAndroid, SectionList, FlatList, RefreshControl } from 'react-native'
 import Images from '../images/ImageList'
-import Api from '../api/Api'
 import GV from '../utils/GlobalVariable'
 import * as Progress from 'react-native-progress';
 var AllMenu = [];
@@ -29,10 +28,9 @@ class WorksView extends React.Component {
         this._getModuleDefault()
     }
     _getModuleDefault() {
-        console.log("令牌" + GV.ACCESS_TOKEN)
 
         if (GV.ACCESS_TOKEN !== '') {
-            var url = 'http://api.test.zhu-ku.com/zhuku/ws/system/sysroleapp/selectUserRoleAll/' + GV.ACCESS_TOKEN;
+            var url = 'http://api.test.zhu-ku.com/zhuku/ws/system/sysroleapp/selectUserRoleAll/eFkQGdic8WgNiXDa';
             var header = {
                 method: 'get',
             }
@@ -48,11 +46,10 @@ class WorksView extends React.Component {
                 .then((responseJson) => {
 
                     if (responseJson.statusCode == '0000') {
-                        //ToastAndroid.show('获取权限成功', ToastAndroid.SHORT);
+                        ToastAndroid.show('成功', ToastAndroid.SHORT);
                         this._initItem(responseJson.returnData);
                     } else {
-                        //alert(responseJson.statusDesc + 'response')
-                        ToastAndroid.show('获取权限失败：' + responseJson.statusDesc, ToastAndroid.SHORT);
+                        ToastAndroid.show('失败：' + responseJson.statusDesc, ToastAndroid.SHORT);
                     }
                     this.setState({
                         isLoading: false
@@ -65,28 +62,19 @@ class WorksView extends React.Component {
                         isLoading: false
                     })
                 })
-            //ToastAndroid.show('132132', ToastAndroid.SHORT);
         }
     }
+    
+    _renderItem = ({ item }) =>
+        <View style={styles.viewRow}>
+            <Image source={item.img} style={styles.imageItem} />
+            <Text style={styles.textItem}>{item.name}</Text>
+        </View>
 
-    _renderItem = ({ info }) => null
 
     _renderSectionHeader = ({ section }) =>
         <View>
             <Text style={styles.viewItemHeader}>{section.title}</Text>
-            <FlatList
-                data={section.data}
-                style={styles.flastList}
-                numColumns={4}
-                renderItem={({ item }) =>
-                    <TouchableOpacity onPress={item.onPress}>
-                        <View style={styles.viewRow}>
-                            <Image source={item.img} style={styles.imageItem} />
-                            <Text style={styles.textItem}>{item.name}</Text>
-                        </View>
-                    </TouchableOpacity>
-                }
-            />
         </View>
 
 
@@ -101,9 +89,9 @@ class WorksView extends React.Component {
                 <SectionList
                     style={styles.background}
                     renderSectionHeader={this._renderSectionHeader}
-                    renderItem={({ info }) => null}
+                    renderItem={this._renderItem}
                     sections={AllMenu}
-                    //refreshing={this.state.isLoading}
+                //refreshing={this.state.isLoading}
                 />
 
         )
@@ -132,11 +120,11 @@ class WorksView extends React.Component {
         OAData.push(data2)
         OAData.push(data3)
         OAData.push(data4)
-        OAData.push(data5)
-        OAData.push(data6)
-        OAData.push(data7)
-        OAData.push(data8)
-        OAData.push(data9)
+        // OAData.push(data5)
+        // OAData.push(data6)
+        // OAData.push(data7)
+        // OAData.push(data8)
+        // OAData.push(data9)
 
         //循环找出拥有权限的模块
         for (var index = 0; index < returnData.length; index++) {
@@ -184,10 +172,10 @@ class WorksView extends React.Component {
 
         }
 
-        var OAMenu = { key: 0, title: '办公', data: OAData }//把办公子模块添加到办公模块
-        var YXMenu = { key: 1, title: '营销', data: YXData }//把营销子模块添加到营销模块
-        var CGMenu = { key: 2, title: '采购', data: CGData }//把采购子模块添加到采购模块
-        var TJMenu = { key: 3, title: '统计', data: TJData }//把统计子模块添加到统计模块
+        var OAMenu = { title: '办公', data: OAData }//把办公子模块添加到办公模块
+        var YXMenu = { title: '营销', data: YXData }//把营销子模块添加到营销模块
+        var CGMenu = { title: '采购', data: CGData }//把采购子模块添加到采购模块
+        var TJMenu = { title: '统计', data: TJData }//把统计子模块添加到统计模块
         AllMenu.push(OAMenu);//讲办公添加到模块集合
         AllMenu.push(YXMenu);//讲营销添加到模块集合
         AllMenu.push(CGMenu);//讲采购添加到模块集合

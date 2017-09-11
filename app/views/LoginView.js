@@ -3,13 +3,14 @@ import { StyleSheet, View, Image, Text, TextInput, TouchableOpacity, ToastAndroi
 import Images from '../images/ImageList'
 import * as Progress from 'react-native-progress';
 import AsUtils from '../utils/AsyncStorageUtils'
-
+import GV from '../utils/GlobalVariable'
+import Api from '../api/Api'
 export default class LoginView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            username: '18260025092',
+            password: '00000000',
             isLoading: false
         };
     }
@@ -39,9 +40,11 @@ export default class LoginView extends React.Component {
     }
 
     _onPressLogin() {
+        console.log('_onPressLogin')
+        //this.props.navigation.navigate('Main')
         //alert("zhanghao:" + this.state.username + ":mima:" + this.state.password)
         if (this._isNull() == false) {
-            var url = 'http://api.test.zhu-ku.com/zhuku/ws/system/auth/access';
+            var url = Api.access;
             var header = {
                 method: 'post',
                 headers: {
@@ -51,7 +54,7 @@ export default class LoginView extends React.Component {
                 body: JSON.stringify({
                     userAccount: this.state.username,
                     userPassword: this.state.password,
-                    appKey: 'Android#123456',
+                    appKey: 'IOS#12134',
                 })
             }
             this.setState({
@@ -65,23 +68,31 @@ export default class LoginView extends React.Component {
                 .then((responseJson) => {
 
                     if (responseJson.statusCode == '0000') {
-                        ToastAndroid.show('登录成功!', ToastAndroid.SHORT);
+                        ToastAndroid.show('登录成功:'+responseJson.tokenCode, ToastAndroid.SHORT);
+
                         AsUtils.setItem(AsUtils.AS_KEY_USERACCOUNT, this.state.username);
                         AsUtils.setItem(AsUtils.AS_KEY_PASSWORD, this.state.password);
+                        
+                        GV.ACCESS_TOKEN = responseJson.tokenCode;
+                        GV.USER_NAME = responseJson.returnData.userName;
+                        GV.USER_PORTRAIT = responseJson.returnData.userHeadImg;
+                        GV.COMPANYNAME = responseJson.returnData.companyName;
+                        console.log(GV.ACCESS_TOKEN)
                         this.props.navigation.navigate('Main')
                     } else {
                         //alert(responseJson.statusDesc + 'response')
-                        ToastAndroid.show('登录shibai !' + responseJson.statusDesc, ToastAndroid.SHORT);
+                        ToastAndroid.show('登录失败：' + responseJson.statusDesc, ToastAndroid.SHORT);
                     }
-
+                    this.setState({
+                        isLoading: false
+                    })
                 })
                 .catch((error) => {
                     alert(error)
+                    this.setState({
+                        isLoading: false
+                    })
                 })
-
-            this.setState({
-                isLoading: false
-            })
         }
     }
 
@@ -89,21 +100,25 @@ export default class LoginView extends React.Component {
 
         //alert(AsUtils.getItem(AsUtils.AS_KEY_USER_NAME))
 
-        AsUtils.getItem(AsUtils.AS_KEY_USERACCOUNT).then((value) => {
-            this.setState({
-                username: value
-            })
+        // AsUtils.getItem(AsUtils.AS_KEY_USERACCOUNT).then((value) => {
+        //     this.setState({
+        //         username: value
+        //     })
+        //     //this._autoLogin();
+        // });
+        // AsUtils.getItem(AsUtils.AS_KEY_PASSWORD).then((value) => {
+        //     this.setState({
+        //         password: value
+        //     })
+        //     //this._autoLogin();
+        // });
+        
+        
+    }
 
-        });
-        AsUtils.getItem(AsUtils.AS_KEY_PASSWORD).then((value) => {
-            this.setState({
-                password: value
-            })
-
-        });
-
-        if (this.state.username !== '' && this.state.password !== '') {
-            this._onPressLogin;
+    _autoLogin(){
+        if (this.state.username !== '' &&this.state.username !== null  && this.state.password !== '' &&this.state.password !== null) {
+            this._onPressLogin();
         }
     }
 
@@ -161,7 +176,7 @@ export default class LoginView extends React.Component {
                         </View>
                     </TouchableOpacity>
 
-                    <View style={styles.viewForgetPassword}>
+                    <View onPress={()=>alert('忘记密码？')} style={styles.viewForgetPassword}>
                         <Text style={styles.textForgetPassword}>忘记密码？</Text>
                     </View>
                 </View>
@@ -171,15 +186,18 @@ export default class LoginView extends React.Component {
     }
 
 }
-var fontSize = 12;
+var fontSize = 16;
 const styles = StyleSheet.create({
+
     background: {
         flex: 1,
         backgroundColor: 'white',
     },
 
     container: {
-        margin: 10,
+        marginTop: 10,
+        marginLeft:20,
+        marginRight:20,
     },
 
     viewTitle: {
@@ -199,8 +217,8 @@ const styles = StyleSheet.create({
     },
 
     imageLogo: {
-        height: 60,
-        width: 60,
+        height: 100,
+        width: 100,
     },
 
     viewItem: {
@@ -214,6 +232,7 @@ const styles = StyleSheet.create({
         fontSize: fontSize,
         color: 'black',
     },
+
     textInputItem: {
         fontSize: fontSize,
         flex: 1,
@@ -222,8 +241,8 @@ const styles = StyleSheet.create({
     },
 
     line: {
-        height: 0.5,
-        backgroundColor: 'black',
+        height: 1,
+        backgroundColor: '#cccccc',
         marginTop: 10,
     },
 
@@ -247,7 +266,7 @@ const styles = StyleSheet.create({
     },
 
     textForgetPassword: {
-        fontSize: 8,
+        fontSize: 12,
     },
 
     load: {
@@ -255,4 +274,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     }
+
 })

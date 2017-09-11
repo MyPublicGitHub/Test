@@ -13,12 +13,14 @@ import LoginView from './views/LoginView'
 
 import MainScreenNavigator from './navigator/MainScreenNavigator'
 
+import TestView from './test/test'
 
 const Index = StackNavigator({
     Splash:{screen:SplashView},
     SelectEnter:{screen:SelectEnterView},
     Login:{screen:LoginView},
-    Main:{screen:MainScreenNavigator}
+    Main:{screen:MainScreenNavigator},
+    Test:{screen:TestView},
 })
 
 

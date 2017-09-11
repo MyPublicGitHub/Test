@@ -9,6 +9,5 @@ import {
 } from 'react-native';
 
 import zhuku from './app/index'
-//import zhuku from './app/test/TestAsyncStore'
 AppRegistry.registerComponent('zhuku', () => zhuku);
 

@@ -1,6 +1,6 @@
 "use strict";
 import React from 'react'
-import { Image, } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { TabNavigator } from 'react-navigation'
 
 import Images from '../images/ImageList'
@@ -19,6 +19,7 @@ const MainScreenNavigator = TabNavigator({
         navigationOptions: {
             tabBarLabel: '消息',
             tabBarIcon: ({ tintColor, focused }) => (<Image
+                style={styles.icon}
                 source={focused ? Images.messageLight : Images.message}
                 resizeMode={resizeMode} />)
         }
@@ -28,7 +29,8 @@ const MainScreenNavigator = TabNavigator({
         navigationOptions: {
             tabBarLabel: '工作台',
             tabBarIcon: ({ tintColor, focused }) => (<Image
-                source={focused ? Images.workstLight : Images.Works}
+                style={styles.icon}
+                source={focused ? Images.workstLight : Images.works}
                 resizeMode={resizeMode}
             />)
         }
@@ -38,6 +40,7 @@ const MainScreenNavigator = TabNavigator({
         navigationOptions: {
             tabBarLabel: '项目',
             tabBarIcon: ({ tintColor, focused }) => (<Image
+                style={styles.icon}
                 source={focused ? Images.projectLight : Images.project}
                 resizeMode={resizeMode}
             />)
@@ -48,6 +51,7 @@ const MainScreenNavigator = TabNavigator({
         navigationOptions: {
             tabBarLabel: '联系人',
             tabBarIcon: ({ tintColor, focused }) => (<Image
+                style={styles.icon}
                 source={focused ? Images.contactLight : Images.contact}
                 resizeMode={resizeMode}
             />)
@@ -58,6 +62,7 @@ const MainScreenNavigator = TabNavigator({
         navigationOptions: {
             tabBarLabel: '我的',
             tabBarIcon: ({ tintColor, focused }) => (<Image
+                style={styles.icon}
                 source={focused ? Images.myLight : Images.my}
                 resizeMode={resizeMode}
             />)
@@ -73,15 +78,15 @@ const MainScreenNavigator = TabNavigator({
         },
         tabBarOptions: {
             activeTintColor: '#34b0ff', // 文字和图片选中颜色
-            inactiveTintColor: '#000', // 文字和图片未选中颜色
+            inactiveTintColor: '#999', // 文字和图片未选中颜色
             showIcon: true, // android 默认不显示 icon, 需要设置为 true 才会显示
             showLabel: true,
             pressColor: '#6c6dff',
             pressOpcity: '0.5',
-            //iconStyle: { width: 10, height: 10, margin: 2, },//设置后图片显示不完整    
+            //iconStyle: { width: 20, height: 20, },//设置后图片显示不完整    
             style: {
                 backgroundColor: '#fff', // TabBar 背景色
-                height: 60
+                height: 54
             },
             indicatorStyle: {
                 height: 0, // 如TabBar下面显示有一条线，可以设高度为0后隐藏
@@ -93,5 +98,11 @@ const MainScreenNavigator = TabNavigator({
         }
     })
 
-
+const styles = StyleSheet.create({
+    icon: {
+        height: 24,
+        width: 24,
+        margin:0,
+    },
+})
 export default MainScreenNavigator

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginLeft:10,
         marginRight:10,
+        borderRadius:5,
     },
     
     item: {
@@ -125,11 +126,11 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         marginLeft:10,
-        fontSize:12,
+        fontSize:16,
         color:'black'
     },
     textContent: {
-        fontSize:8,
+        fontSize:14,
     },
     into: {
         height: 10,
