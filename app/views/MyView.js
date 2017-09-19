@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, ScrollView, View, Image, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import Images from '../images/ImageList'
-import GV from '../utils/GlobalVariable'
 
-export default class MyView extends React.Component {
+import {connect} from 'react-redux';
+
+class MyView extends React.Component {
     static navigationOptions = {
         headerTitle: <Text style={{ alignSelf: 'center', fontSize:16,color:'black',}}>我</Text>,
         headerLeft: null,
@@ -11,23 +12,30 @@ export default class MyView extends React.Component {
             height: 40,
         }
     }
+    
+    componentDidMount() {
+        
+    }
+
+    
 
     render() {
+        const {dispatch, login} = this.props;
         return (
             <ScrollView style={styles.background}>
                 <View style={styles.container}>
                     <View style={[styles.itemStyle, { marginTop: 20 }]}>
                         <Image style={styles.imageHeader}
-                            source={GV.USER_PORTRAIT ? { uri: GV.USER_PORTRAIT } : Images.defaultHead}
+                            source={login.user.userHeadImg ? { uri: login.user.userHeadImg } : Images.defaultHead}
                             onLoaded={() => console.log('Image was loaded!')}
                             onError={() => console.log('myView图片加载出错')}
                             resizeMode={'cover'} />
                         <View>
                             <View style={styles.userInfoTop}>
-                                <Text style={styles.usernameText}>{GV.USER_NAME}</Text>
+                                <Text style={styles.usernameText}>{login.user.userName}</Text>
                                 <Text style={styles.userPostText}>软件工程师</Text>
                             </View>
-                            <Text style={styles.userCompanyText}>湖南筑库网信息技术有限公司</Text>
+                            <Text style={styles.userCompanyText}>{login.user.companyName}</Text>
                         </View>
                     </View>
 
@@ -103,6 +111,15 @@ export default class MyView extends React.Component {
     }
 
 }
+
+function mapStateToProps(state) {
+	const {login} = state;
+	return {
+		login
+	}
+}
+
+export default connect(mapStateToProps) (MyView)
 
 const styles = StyleSheet.create({
     

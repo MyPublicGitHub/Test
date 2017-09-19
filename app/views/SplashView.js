@@ -2,11 +2,9 @@ import React from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import Images from '../images/ImageList'
 
+import { connect } from 'react-redux';
 
-var name = '';
-var pass = '';
-
-export default class SplashView extends React.Component {
+class SplashView extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -20,66 +18,20 @@ export default class SplashView extends React.Component {
         // state.params.callback('从SplashView界面回传的数据');
         goBack(null);
     }
-    
+
     componentDidMount() {
-        this.timer = setTimeout(() => { this.props.navigation.navigate('SelectEnter') }, 1000);
+        const { dispatch, login } = this.props;
+
+        this.timer = setTimeout(() => {
+            if (login.user==null){
+                this.props.navigation.navigate('SelectEnter')
+            }else{
+                this.props.navigation.navigate('Main')
+            }  
+        }, 1);
+
     };
-    componentWillMount(){
-        // AsUtils.getItem(AsUtils.AS_KEY_USERACCOUNT).then((value) => {
-        //     name=value
-        //     if (name !== '') {
-        //         this._autoLogin(name, pass);
-        //     } else {
-        //         alert(name)
-                
-        //     }
-        // });
-        // AsUtils.getItem(AsUtils.AS_KEY_PASSWORD).then((value) => {
-        //     pass= value
-            
-        // });
-        
-    }
-    _autoLogin(username, password) {
-        //alert("zhanghao:" + this.state.username + ":mima:" + this.state.password)
-        if (this._isNull() == false) {
-            var url = 'http://api.test.zhu-ku.com/zhuku/ws/system/auth/access';
-            var header = {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userAccount: username,
-                    userPassword: password,
-                    appKey: 'Android#123456',
-                })
-            }
 
-            fetch(url, header)
-                .then((response) => {
-                    return response.json()
-                })
-                .then((responseJson) => {
-
-                    if (responseJson.statusCode == '0000') {
-                        ToastAndroid.show('登录成功', ToastAndroid.SHORT);
-                        AsUtils.setItem(AsUtils.AS_KEY_USERACCOUNT, username);
-                        AsUtils.setItem(AsUtils.AS_KEY_PASSWORD, password);
-                        this.props.navigation.navigate('Main')
-                    } else {
-                        //alert(responseJson.statusDesc + 'response')
-                        //ToastAndroid.show('登录失败：' + responseJson.statusDesc, ToastAndroid.SHORT);
-                        this.props.navigation.navigate('SelectEnter')
-                    }
-                })
-                .catch((error) => {
-                    //alert(error)
-                    this.props.navigation.navigate('SelectEnter')
-                })
-        }
-    }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     };
@@ -93,6 +45,15 @@ export default class SplashView extends React.Component {
     }
 
 }
+
+function mapStateToProps(state) {
+    const { login } = state;
+    return {
+        login
+    }
+}
+
+export default connect(mapStateToProps)(SplashView)
 
 const styles = StyleSheet.create({
     container: {

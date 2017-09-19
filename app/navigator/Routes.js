@@ -7,13 +7,13 @@ import {
     StatusBar,
 }from 'react-native'
 import {StackNavigator,TobNavigator} from 'react-navigation'
-import SplashView from './views/SplashView'
-import SelectEnterView from './views/SelectEnterView'
-import LoginView from './views/LoginView'
+import SplashView from '../views/SplashView'
+import SelectEnterView from '../views/SelectEnterView'
+import LoginView from '../views/LoginView'
 
-import MainScreenNavigator from './navigator/MainScreenNavigator'
+import MainScreenNavigator from '../navigator/MainScreenNavigator'
 
-import TestView from './test/test'
+import TestView from '../test/TestPicker'
 
 const Index = StackNavigator({
     Splash:{screen:SplashView},
@@ -22,6 +22,5 @@ const Index = StackNavigator({
     Main:{screen:MainScreenNavigator},
     Test:{screen:TestView},
 })
-
 
 export default Index

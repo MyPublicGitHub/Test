@@ -1,9 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Image, Text, ImageBackground, TouchableOpacity, ToastAndroid, SectionList, FlatList ,RefreshControl} from 'react-native'
+import { StyleSheet, View, Image, Text, ImageBackground, TouchableOpacity, ToastAndroid, SectionList, FlatList, RefreshControl } from 'react-native'
 import Images from '../images/ImageList'
 import Api from '../api/Api'
-import GV from '../utils/GlobalVariable'
 import * as Progress from 'react-native-progress';
+
+import { connect } from 'react-redux';
+
 var AllMenu = [];
 var Dimensions = require('Dimensions');//获取屏幕的宽高 
 var ScreenWidth = Dimensions.get('window').width;
@@ -29,10 +31,9 @@ class WorksView extends React.Component {
         this._getModuleDefault()
     }
     _getModuleDefault() {
-        console.log("令牌" + GV.ACCESS_TOKEN)
-
-        if (GV.ACCESS_TOKEN !== '') {
-            var url = 'http://api.test.zhu-ku.com/zhuku/ws/system/sysroleapp/selectUserRoleAll/' + GV.ACCESS_TOKEN;
+        const { dispatch, login } = this.props;
+        if (login.tokenCode !== null) {
+            var url = Api.selectUserRoleAll + login.tokenCode;
             var header = {
                 method: 'get',
             }
@@ -48,16 +49,14 @@ class WorksView extends React.Component {
                 .then((responseJson) => {
 
                     if (responseJson.statusCode == '0000') {
-                        //ToastAndroid.show('获取权限成功', ToastAndroid.SHORT);
                         this._initItem(responseJson.returnData);
+
                     } else {
-                        //alert(responseJson.statusDesc + 'response')
-                        ToastAndroid.show('获取权限失败：' + responseJson.statusDesc, ToastAndroid.SHORT);
+                        ToastAndroid.show('获取权限失败：' + responseJson.statusDesc + login.tokenCode, ToastAndroid.SHORT);
                     }
                     this.setState({
                         isLoading: false
                     })
-
                 })
                 .catch((error) => {
                     alert(error)
@@ -65,7 +64,6 @@ class WorksView extends React.Component {
                         isLoading: false
                     })
                 })
-            //ToastAndroid.show('132132', ToastAndroid.SHORT);
         }
     }
 
@@ -78,37 +76,44 @@ class WorksView extends React.Component {
                 data={section.data}
                 style={styles.flastList}
                 numColumns={4}
-                renderItem={({ item }) =>
-                    <TouchableOpacity onPress={item.onPress}>
-                        <View style={styles.viewRow}>
-                            <Image source={item.img} style={styles.imageItem} />
-                            <Text style={styles.textItem}>{item.name}</Text>
-                        </View>
-                    </TouchableOpacity>
-                }
+                renderItem={this._renderFlatListItem}
+                keyExtractor={(item, index) => { item.name }}
             />
         </View>
 
+    _renderFlatListItem = ({ item }) =>
+        <TouchableOpacity onPress={item.onPress}>
+            <View style={styles.viewRow}>
+                <Image source={item.img} style={styles.imageItem} />
+                <Text style={styles.textItem}>{item.name}</Text>
+            </View>
+        </TouchableOpacity>
 
     render() {
         return (
-            this.state.isLoading ?
-                <View style={styles.load}>
-                    <Progress.CircleSnail style={{ margin: 10, alignSelf: 'center' }} color={['red', 'green', 'blue', 'black', 'yellow']} size={30} />
-                    <Text>正在加载...</Text>
-                </View>
-                :
-                <SectionList
-                    style={styles.background}
-                    renderSectionHeader={this._renderSectionHeader}
-                    renderItem={({ info }) => null}
-                    sections={AllMenu}
-                    //refreshing={this.state.isLoading}
-                />
+            // this.state.isLoading ?
+            //     <View style={styles.load}>
+            //         <Progress.CircleSnail style={{ margin: 10, alignSelf: 'center' }} color={['red', 'green', 'blue', 'black', 'yellow']} size={30} />
+            //         <Text>正在加载...</Text>
+            //     </View>
+            //     :
+            <SectionList
+                style={styles.background}
+                renderSectionHeader={this._renderSectionHeader}
+                renderItem={({ info }) => null}
+                sections={AllMenu}
+                refreshing={this.state.isLoading}
+                onRefresh={this.onRefresh.bind(this)}
+                keyExtractor={(item, index) => { item.name }}
+                
+            />
 
         )
     }
-
+    onRefresh() {
+        AllMenu = []
+        this._getModuleDefault()
+    }
     _initItem(returnData) {
 
         var OAData = []
@@ -196,6 +201,15 @@ class WorksView extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    const { login } = state;
+    return {
+        login
+    }
+}
+
+export default connect(mapStateToProps)(WorksView)
+
 const styles = StyleSheet.create({
     load: {
         flex: 1,
@@ -239,5 +253,3 @@ const styles = StyleSheet.create({
     flastList: {
     },
 })
-
-export default WorksView

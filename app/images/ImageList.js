@@ -54,5 +54,20 @@ const Images = {
     //工作台-统计
     tjGLTJ: require('./icon_oa_guanlitongji.png'),
     tjXMTJ: require('./icon_oa_xiangmutongji.png'),
+
+    // 首页-项目
+    pjBanner: require('./banner_ad.png'),
+
+    pjKQGL: require('./icon_pm_kaoqing.png'),
+    pjLXGL: require('./icon_pm_lixiang.png'),
+    pjZLGL: require('./icon_pm_ziliao.png'),
+    pjFBGL: require('./icon_pm_fenbao.png'),
+    pjAQGL: require('./icon_pm_anquan.png'),
+    pjJDGL: require('./icon_pm_jindu.png'),
+    pjWZGL: require('./icon_pm_wuzi.png'),
+    pjSGGL: require('./icon_pm_shigongrizhi.png'),
+
+    add: require('./icon_right_add.png'),
+    change: require('./icon_pm_change.png'),
 }
 export default Images

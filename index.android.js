@@ -8,6 +8,7 @@ import {
   AppRegistry,
 } from 'react-native';
 
-import zhuku from './app/index'
+import zhuku from './app/App'
+
 AppRegistry.registerComponent('zhuku', () => zhuku);
 

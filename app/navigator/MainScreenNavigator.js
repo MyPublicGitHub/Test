@@ -94,8 +94,10 @@ const MainScreenNavigator = TabNavigator({
             labelStyle: {
                 fontSize: 10, // 文字大小
                 // color: '#000',如果指出设置颜色，会覆盖activeTintColor、inactiveTintColor设置
-            }
-        }
+            },
+        },
+        swipeEnabled :false,// - 是否可以滑动切换Tab选项卡
+        initialRouteName :'Project',
     })
 
 const styles = StyleSheet.create({

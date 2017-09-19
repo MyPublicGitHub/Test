@@ -1,9 +1,11 @@
 
-const Api = {
-    zhuku: 'http://api.test.zhu-ku.com/zhuku/',
+var zhuku= 'http://api.test.zhu-ku.com/zhuku/';//BaseUrl
 
-    access: 'http://api.test.zhu-ku.com/zhuku/ws/system/auth/access',//登录
-    selectUserRoleAll: 'http://api.test.zhu-ku.com/zhuku/ws/system/sysroleapp/selectUserRoleAll/{tokenCode}',//获取模块权限
+const Api = {
+    
+    access: zhuku+'ws/system/auth/access',//登录
+    selectUserRoleAll: zhuku+'ws/system/sysroleapp/selectUserRoleAll/',//获取模块权限{tokenCode}
+
 }
 
 export default Api
